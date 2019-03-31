@@ -1,28 +1,7 @@
-function loadTimeline(dataset, groups, element) {
-    // Create a DataSet (allows two way data-binding)
-    var items = new vis.DataSet(dataset);
-
-    // Configuration for the Timeline
-    var options = {
-        zoomKey: 'ctrlKey',
-        zoomMax: 15778800000000,
-        zoomMin: 31557600000
-    };
-
-    // Create a Timeline
-    var timeline = new vis.Timeline(element, items, groups, options);
-}
-
-// DOM element where the Timeline will be attached
-var container = document.getElementById('visualization');
-
-var indicator = document.getElementById('span-status-indicator');
-indicator.textContent = "Loading data ...";
-
+// Helper functions
 
 function process_data(dataset) {
     dataset.data.forEach(function (element) {
-        //console.log(element)
         if (element.end.trim() === "") {
             element.end = null;
         }
@@ -47,12 +26,46 @@ function process_data(dataset) {
     };
 }
 
+
+// Timeline functions
+
+function updateTimeline(timeline, dataset, groups) {
+    timeline.setData({
+        groups: groups,
+        items: new vis.DataSet(dataset)
+    });
+
+    timeline.fit();
+}
+
+function loadTimeline(element) {
+    var options = {
+        zoomKey: 'ctrlKey',
+        zoomMax: 157788000000000,
+        zoomMin: 315576000,
+        stack: false,
+        max: "2500",
+        min: "1000"
+    };
+
+    var timeline = new vis.Timeline(element, [], options);
+    return timeline;
+}
+
+
+var container = document.getElementById('visualization');
+
+var indicator = document.getElementById('span-status-indicator');
+indicator.textContent = "Loading data ...";
+
 fetch('https://esm7sau4p5.execute-api.us-east-1.amazonaws.com/default/timeline').then(function (response) {
     return response.json();
 }).then(function (dataset) {
+    timeline = loadTimeline(container);
 
     results = process_data(dataset);
+    items = results.data;
 
-    loadTimeline(results.data, results.groups, container);
+    updateTimeline(timeline, items, results.groups);
     indicator.textContent = "";
 })
