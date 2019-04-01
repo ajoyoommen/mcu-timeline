@@ -45,7 +45,7 @@ function loadTimeline(element) {
         zoomMin: 315576000,
         stack: false,
         max: "2500",
-        min: "1000"
+        min: "-3000"
     };
 
     var timeline = new vis.Timeline(element, [], options);
