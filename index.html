@@ -1,28 +1,37 @@
-<!DOCTYPE HTML>
-<html>
+<!doctype html>
+<html lang="en">
   <head>
-    <title>MCU Timeline</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <style type="text/css">
-      body, html {
-        font-family: sans-serif;
-      }
-    </style>
+    <title>MCU Timeline</title>
 
     <script src="dist/vis.js"></script>
     <link href="dist/vis.css" rel="stylesheet" type="text/css" />
+    <link href="dist/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="index.css" rel="stylesheet" type="text/css" />
   </head>
 
   <body>
-    <h1>MCU Timeline</h1>
-    <small>
-      Data from <a href="http://collider.com/mcu-timeline-explained/">Collider</a> |
-      Source code available at <a href="https://github.com/ajoyoommen/mcu-timeline/">Github</a>
-    </small>
+    <div class="container">
+      <h1>MCU Timeline</h1>
 
-    <span id="span-status-indicator"></span>
-    <div id="visualization"></div>
+      <div class="row">
+        <div class="col-md-10">
+          <span id="span-status-indicator"></span>
+          <div id="visualization"></div>
+        </div>
+
+        <div class="col-md-2">
+          <p id="item-details"></p>
+        </div>
+      </div>
+
+      <footer class="footer">
+        Data from <a href="http://collider.com/mcu-timeline-explained/">Collider</a> |
+        Source code available at <a href="https://github.com/ajoyoommen/mcu-timeline/">Github</a>
+      </footer>
+    </div>
     <script type="text/javascript" src="app.js"></script>
   </body>
 </html>
