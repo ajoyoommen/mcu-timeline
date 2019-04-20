@@ -63,12 +63,10 @@ class Data {
 function loadTimeline(element) {
     var options = {
         zoomKey: 'ctrlKey',
-//        zoomMax: 15778800000000000,
-//        zoomMin: 31557600000,
-//        stack: false,
+        maxHeight: "80vh",
+        zoomMin: 1000000000,
         max: "2500",
         min: "-3000",
-        type: 'point',
         showTooltips: false
     };
 
@@ -76,40 +74,54 @@ function loadTimeline(element) {
     return timeline;
 }
 
-function updateTimeline(timeline, dataset, groups) {
+function updateTimeline(element, element_detail, items, groups, dataset) {
+    var timeline = loadTimeline(element);
+
     timeline.setData({
         groups: groups,
-        items: new vis.DataSet(dataset)
+        items: new vis.DataSet(items)
     });
     timeline.fit();
+
+    timeline.on('select', function (properties) {
+        item = dataset.get_item(properties.items[0]);
+
+//        element_detail.innerHTML = "<strong>" + item.content + "</strong><br>" +
+//            item.title + "<br>" +
+//            "<span class='blockquote-footer'>Source: " + item.source + "</span>";
+
+        element_detail.innerHTML = '<div class="card">' +
+              '<div class="card-body">' +
+                '<h5 class="card-title">' + item.content + '</h5>' +
+                '<p class="card-text">' + item.title + '</p>' +
+                '<h6 class="card-subtitle mb-2 text-muted">Source:' + item.source + '</h6>' +
+              '</div>' +
+            '</div>'
+    });
+
+    return timeline;
 }
 
 
 // GET DATA, INITIALIZE AND LOAD TIMELINE
 // --------------------------------------
 
-var container = document.getElementById('visualization');
-
-var indicator = document.getElementById('span-status-indicator');
-indicator.textContent = "Loading data ...";
+var indicator = document.getElementById('status-spinner');
+indicator.style.display = "block";
 
 fetch('https://esm7sau4p5.execute-api.us-east-1.amazonaws.com/default/timeline').then(function (response) {
     return response.json();
 }).then(function (data) {
-    timeline = loadTimeline(container);
-
     var dataset = new Data(data.data, data.groups)
-    sliced = dataset.slice_dataset(0, 10)
 
-    updateTimeline(timeline, sliced.items, sliced.groups);
-    indicator.textContent = "";
+    slice1 = dataset.slice_dataset(0, 200);
+    var vis1 = document.getElementById('vis1');
+    var vis1_detail = document.getElementById('vis1-detail');
+    var timeline1 = updateTimeline(vis1, vis1_detail, slice1.items, slice1.groups, dataset);
 
-    timeline.on('select', function (properties) {
-        item = dataset.get_item(properties.items[0]);
-
-        var item_title_element = document.getElementById('item-details');
-        item_title_element.innerHTML = "<strong>" + item.content + "</strong><br>" +
-            item.title + "<br>" +
-            "<small>(Source: " + item.source + ")</small>";
-    });
+//    slice2 = dataset.slice_dataset(10, 20);
+//    var vis2 = document.getElementById('vis2');
+//    var vis2_detail = document.getElementById('vis2-detail');
+//    var timeline2 = updateTimeline(vis2, vis2_detail, slice2.items, slice2.groups, dataset);
+    indicator.style.display = "none";
 })
