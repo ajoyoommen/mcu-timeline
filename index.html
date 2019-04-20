@@ -1,28 +1,42 @@
-<!DOCTYPE HTML>
-<html>
+<!doctype html>
+<html lang="en">
   <head>
-    <title>MCU Timeline</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <style type="text/css">
-      body, html {
-        font-family: sans-serif;
-      }
-    </style>
+    <title>MCU Timeline</title>
 
     <script src="dist/vis.js"></script>
     <link href="dist/vis.css" rel="stylesheet" type="text/css" />
+    <link href="dist/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="index.css" rel="stylesheet" type="text/css" />
   </head>
 
   <body>
-    <h1>MCU Timeline</h1>
-    <small>
-      Data from <a href="http://collider.com/mcu-timeline-explained/">Collider</a> |
-      Source code available at <a href="https://github.com/ajoyoommen/mcu-timeline/">Github</a>
-    </small>
+    <div class="container-fluid">
+      <h1>MCU Timeline</h1>
+      <p><small>Click and drag or CTRL and zoom the timeline. Click on an event to expand.</small></p>
+      <div id="status-spinner" class="spinner-border spinner-border-sm" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
 
-    <span id="span-status-indicator"></span>
-    <div id="visualization"></div>
+      <div class="row">
+        <div class="col-md-10">
+          <div id="vis1"></div>
+        </div>
+
+        <div class="col-md-2">
+          <p id="vis1-detail"></p>
+        </div>
+      </div>
+
+      <footer class="footer fixed-bottom text-center">
+        Sources: <a href="http://collider.com/mcu-timeline-explained/">Collider</a>,
+        <a href="https://decider.com/2018/08/14/marvel-avengers-infinity-war-timeline/">Decider</a>,
+        <a href="https://www.thewrap.com/marvel-cinematic-universe-complete-timeline/">The Wrap</a>
+        Source code: <a href="https://github.com/ajoyoommen/mcu-timeline/">Github</a>
+      </footer>
+    </div>
     <script type="text/javascript" src="app.js"></script>
   </body>
 </html>
